@@ -96,9 +96,15 @@ if(connect()){
 
 client.on('message', function (topic, message) {
   // message is Buffer
+  // 20:04:40.077 - hours:minutes:seconds.milliseconds
   var time = new Date();
-  console.log("Time at rec",time.getSeconds().toString(), ":",time.getMilliseconds().toString());
-  console.log(topic.toString(), ": ", message.toString())
+  var time_string = time.getHours().toString() +  ":"
+                  + time.getMinutes().toString() + ":"
+                  + time.getSeconds().toString() + "."
+                  + time.getMilliseconds().toString();
+  console.log("\nReceived message at ", time_string);
+  console.log("Topic is ",topic.toString())
+  console.log("Payload is ", message.toString())
   //temp = message.toString();
   map.set(topic, message.toString());
   //client.end()
