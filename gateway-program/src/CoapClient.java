@@ -74,7 +74,7 @@ public class CoapClient {
     
     public void send(){
         
-        System.out.println("\nSTARTED...");
+        //System.out.println("STARTED...");
         DatagramSocket udpSocket;
         
         byte[] message = chooseType();
@@ -94,7 +94,7 @@ public class CoapClient {
             
             udpSocket = new DatagramSocket();
             udpSocket.send(packet);
-            System.out.println("Packet sent to " + this.address + "/" + this.path + ":" + this.port);
+            System.out.println(this.type + " packet sent to " + this.address + "/" + this.path + ":" + this.port);
             
             message = new byte[65536];
             packet = new DatagramPacket(message, message.length);
@@ -113,7 +113,7 @@ public class CoapClient {
             this.recPayload = recPayload;
             
             udpSocket.close();
-            System.out.println("CLOSED");
+            //System.out.println("CLOSED");
             
         } catch (Exception e) {
             e.printStackTrace();

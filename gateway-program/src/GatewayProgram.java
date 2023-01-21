@@ -75,7 +75,7 @@ public class GatewayProgram {
         
         LocalTime time = LocalTime.now();
         
-        System.out.println("Before Coap:" + time);
+        System.out.println("\nCoap Client starting at " + time);
         
         String address = "127.0.0.1";
         int port = 5000;
@@ -84,12 +84,12 @@ public class GatewayProgram {
         String type = "GET";
         
         Scanner scan = new Scanner(System.in);
-        System.out.println("Send "+type+ " to " +address+"/" +path+ ":" + port);
+        //System.out.println("Send "+type+ " to " +address+"/" +path+ ":" + port);
         //scan.next();
         
         
         CoapClient coapClient = new CoapClient(address, port);
-        coapClient.showMoreInfo(true);
+//        coapClient.showMoreInfo(false);
        
             
         coapClient.setParameters(path, type);
@@ -97,7 +97,7 @@ public class GatewayProgram {
         coapClient.send();
         
         time = LocalTime.now();
-        System.out.println("After Coap:" + time);
+        System.out.println("Coap Client got response at " + time);
         
         return coapClient.getPayload();
     }
@@ -110,6 +110,8 @@ public class GatewayProgram {
         String clientId     = "publish_sensor_data_client";
         MemoryPersistence persistence = new MemoryPersistence();
         
+        LocalTime time = LocalTime.now();
+        System.out.println("MQTT Client starting at " + time);
         
         try {
                 MqttClient sampleClient = new MqttClient(broker, clientId, persistence);
@@ -135,7 +137,7 @@ public class GatewayProgram {
                 me.printStackTrace();
             }
         
-        LocalTime time = LocalTime.now();
-        System.out.println("After MQTT:" + time);
+        time = LocalTime.now();
+        System.out.println("MQTT Client finished at " + time);
     }
 }
