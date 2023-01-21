@@ -75,7 +75,7 @@ public class MQTTMultiBroker extends Thread {
 				InputStream is = socket.getInputStream();
 				OutputStream os = socket.getOutputStream();
 						
-                                System.out.println("Incoming connection");
+                                System.out.println("\nIncoming connection");
                                 
 				//Print out the request
                                 
@@ -85,13 +85,15 @@ public class MQTTMultiBroker extends Thread {
                                     fixedHeader = is.read();
                                     remLength = is.read();
                                 } catch (Exception e) {
-                                    System.out.println(e.getMessage());
+                                    System.err.println(e.getMessage());
                                 }
 				
                                 
                                 byte[] buffer = new byte[remLength+2];
-				String incomingData = new String(buffer);				
-				System.out.println(incomingData);
+				
+                                //String incomingData = new String(buffer);				
+				//System.out.println(" : " + incomingData + " : ");
+                                
                                 buffer[0] = (byte) fixedHeader;
                                 buffer[1] = (byte) remLength;
                                 is.read(buffer, 2, remLength);
@@ -126,7 +128,7 @@ public class MQTTMultiBroker extends Thread {
                                     
                                     byte conFlags = buffer[9];
 //                                    System.out.println(conFlags[3]+" "+conFlags[2] +" "+ conFlags[1]+" "+conFlags[0]);
-                                    System.out.println(conFlags);
+                                    //System.out.println(conFlags);
                                     
                                    
                                     
@@ -180,7 +182,7 @@ public class MQTTMultiBroker extends Thread {
                                     
                                     packetType = (buffer[0] & 240)>> 4; // make control packet to 4-bit unsigned value
 //                                    System.out.println("packetType: " + packetType);
-                                    incomingData = new String(buffer);				
+                                    //incomingData = new String(buffer);				
                                     //System.out.println(incomingData);
 //                                    System.out.println(Arrays.toString(buffer));
 //                                    System.out.println(buffer[0] & 0xff);
@@ -259,10 +261,6 @@ public class MQTTMultiBroker extends Thread {
                                             os.write(comb);
                                         }
                                         
-//                                        for (subscribe subss : subs) {
-//                                             System.out.println(subss.getTopic());
-//                                             System.out.println(subss.getClientList());
-//                                        }
                                        
                                         
                                         // make resp message
@@ -349,33 +347,8 @@ public class MQTTMultiBroker extends Thread {
                                         
                                     }
                                     
-//                                    System.out.println("Currently in SUBs: ");
-//                                    for (subscribe sub : subs) {
-//                                        System.out.println("Topic: " + sub.getTopic());
-//                                        System.out.println("Clients: " + sub.getClientList());
-//                                    }
                                 }
 				
-//				String[] split = incomingData.split("\r\n");
-//				//System.out.println(split[0]);				
-//				String requestLine = split[0];
-//				
-//				String split2[] = requestLine.split(" ");
-//				
-//				String command = split2[0]; 
-//				String path = split2[1]; 
-//				String protocol = split2[2]; 
-//				System.out.println(command);
-//				System.out.println(path);
-//				System.out.println(protocol);
-//				
-//				String responseHead = "";
-//				String responseBody = "";
-//				
-//				
-//				
-//				String sendData = responseHead + responseBody;
-//				os.write(sendData.getBytes());
 			
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -396,18 +369,18 @@ public class MQTTMultiBroker extends Thread {
             }
             
             if(sub != null){
-              try {
+                try {
                 
-                for (Socket clientSocket : sub.getClientSockets()) {
-                    OutputStream os = clientSocket.getOutputStream();
-                    os.write(buf);
-                
-                }
+                    for (Socket clientSocket : sub.getClientSockets()) {
+                        OutputStream os = clientSocket.getOutputStream();
+                        os.write(buf);
+                    }
+                    
                 } catch (Exception e) {
-                    System.out.println(e);
+                    System.err.println(e);
                 }  
             }else{
-                System.out.println("This topic doesn't exist");
+                System.out.println("This topic has no subscribers");
             }
     
     }
@@ -429,7 +402,7 @@ public class MQTTMultiBroker extends Thread {
             is.close();
             socket.close();
         } catch (Exception e) {
-            System.out.println("Couldn't disconnect client "+ e.getMessage());
+            System.err.println("Couldn't disconnect client "+ e.getMessage());
         }
         
         
