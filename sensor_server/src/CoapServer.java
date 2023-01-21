@@ -52,6 +52,7 @@ public class CoapServer extends AbstractCoapServer{
                 System.err.println(e);
             }
             String outString = sb.toString();
+            System.out.println("Payload is " + outString);
             
             CoapResponse resp = CoapMessageFactory.createResponse(req,CoapResponseCode._2_05_Content);
             resp.setPayload(CoapResource.FORMAT_TEXT_PLAIN_UTF8,outString.getBytes());
