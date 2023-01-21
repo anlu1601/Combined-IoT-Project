@@ -31,12 +31,12 @@ public class CoapServer extends AbstractCoapServer{
         
         // start timer
         LocalTime time = LocalTime.now();
-        System.out.println("Coap Server rec:" + time);
+        System.out.println("Coap Server Request at " + time);
         
         String resource_name = req.getRequestUriPath();
         try {
             String path = "..\\..\\sensors\\"+resource_name+".txt";
-            System.out.println(path);
+            System.out.println("Accessing sensor " + resource_name);
             StringBuilder sb = null;
             try (Scanner in = new Scanner(new FileReader(path)) //"..\\..\\..\\sensors\\test.txt"
             ) {
@@ -44,7 +44,6 @@ public class CoapServer extends AbstractCoapServer{
                 while(in.hasNext()) {
                     if(in.hasNext()){
                         sb.append(in.next());
-                        System.out.println("Number: " + in.next());
                     } else
                         break;
                 }
@@ -57,14 +56,14 @@ public class CoapServer extends AbstractCoapServer{
             CoapResponse resp = CoapMessageFactory.createResponse(req,CoapResponseCode._2_05_Content);
             resp.setPayload(CoapResource.FORMAT_TEXT_PLAIN_UTF8,outString.getBytes());
             
-            // end timer?
             
             time = LocalTime.now();
-            System.out.println("Coap Server finish:" + time);
+            System.out.println("Coap Server Respond at " + time + "\n");
         
             respond(req,resp);
             
         } catch (Exception e) {
+            System.err.println(e);
             CoapResponse resp = CoapMessageFactory.createResponse(req,CoapResponseCode._4_04_Not_Found);
             respond(req,resp);
         }
