@@ -35,7 +35,7 @@ public class CoapServer extends AbstractCoapServer{
         
         String resource_name = req.getRequestUriPath();
         try {
-            String path = "D:\\School\\iot_protocols\\iotproject_repository\\sensors\\"+resource_name+".txt";
+            String path = "..\\..\\sensors\\"+resource_name+".txt";
             System.out.println(path);
             StringBuilder sb = null;
             try (Scanner in = new Scanner(new FileReader(path)) //"..\\..\\..\\sensors\\test.txt"
@@ -53,7 +53,6 @@ public class CoapServer extends AbstractCoapServer{
                 System.err.println(e);
             }
             String outString = sb.toString();
-            System.out.println("WAWAWAWA"+outString);
             
             CoapResponse resp = CoapMessageFactory.createResponse(req,CoapResponseCode._2_05_Content);
             resp.setPayload(CoapResource.FORMAT_TEXT_PLAIN_UTF8,outString.getBytes());
